@@ -1401,6 +1401,22 @@
           "type": "CHOICE",
           "members": [
             {
+              "type": "FIELD",
+              "name": "checkbox",
+              "content": {
+                "type": "SYMBOL",
+                "name": "checkbox"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
               "type": "SYMBOL",
               "name": "_eof"
             },
@@ -1413,6 +1429,82 @@
               }
             }
           ]
+        }
+      ]
+    },
+    "checkbox": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": "non-immediate",
+            "content": {
+              "type": "STRING",
+              "value": "["
+            }
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "status",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "IMMEDIATE_TOKEN",
+                "content": {
+                  "type": "PREC",
+                  "value": "immediate",
+                  "content": {
+                    "type": "STRING",
+                    "value": " "
+                  }
+                }
+              },
+              {
+                "type": "IMMEDIATE_TOKEN",
+                "content": {
+                  "type": "STRING",
+                  "value": "-"
+                }
+              },
+              {
+                "type": "IMMEDIATE_TOKEN",
+                "content": {
+                  "type": "PREC",
+                  "value": "immediate",
+                  "content": {
+                    "type": "STRING",
+                    "value": "x"
+                  }
+                }
+              },
+              {
+                "type": "IMMEDIATE_TOKEN",
+                "content": {
+                  "type": "PREC",
+                  "value": "immediate",
+                  "content": {
+                    "type": "STRING",
+                    "value": "X"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": "special",
+            "content": {
+              "type": "STRING",
+              "value": "]"
+            }
+          }
         }
       ]
     },

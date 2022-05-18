@@ -243,11 +243,27 @@ org_grammar = {
 
     listitem: $ => seq(
       field('bullet', $.bullet),
+      optional(field('checkbox', $.checkbox)),
       choice(
         $._eof,
         field('contents', $._body_contents),
       ),
     ),
+
+    checkbox: _ => seq(
+      token(prec('non-immediate', '[')), // ]
+        field(
+          'status',
+          choice(
+            token.immediate(prec('immediate', ' ')),
+            // token.immediate(prec('immediate', '-')),
+            // fixes the ERROR in 11b, causes 10d to parse incorrectly as a paragraph
+            token.immediate('-'),
+            token.immediate(prec('immediate', 'x')),
+            token.immediate(prec('immediate', 'X')),
+          )),
+        token(prec('special', ']'))
+      ),
 
     table: $ => prec.right(seq(
       optional($._directive_list),

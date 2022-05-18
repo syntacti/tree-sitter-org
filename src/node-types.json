@@ -120,6 +120,34 @@
     }
   },
   {
+    "type": "checkbox",
+    "named": true,
+    "fields": {
+      "status": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": " ",
+            "named": false
+          },
+          {
+            "type": "-",
+            "named": false
+          },
+          {
+            "type": "X",
+            "named": false
+          },
+          {
+            "type": "x",
+            "named": false
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "comment",
     "named": true,
     "fields": {},
@@ -512,6 +540,16 @@
         "types": [
           {
             "type": "bullet",
+            "named": true
+          }
+        ]
+      },
+      "checkbox": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "checkbox",
             "named": true
           }
         ]
@@ -914,6 +952,10 @@
     "named": false
   },
   {
+    "type": " ",
+    "named": false
+  },
+  {
     "type": "!",
     "named": false
   },
@@ -1042,6 +1084,10 @@
     "named": false
   },
   {
+    "type": "X",
+    "named": false
+  },
+  {
     "type": "[",
     "named": false
   },
@@ -1148,6 +1194,10 @@
   {
     "type": "time",
     "named": true
+  },
+  {
+    "type": "x",
+    "named": false
   },
   {
     "type": "{",
