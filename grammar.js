@@ -53,7 +53,10 @@ org_grammar = {
 
   rules: {
 
-    document: $ => seq(optional($.body), repeat($.section)),
+    document: $ => seq(
+      optional(field('body', $.body)),
+      repeat(field('subsection', $.section)),
+    ),
 
     // Set up to prevent lexing conflicts of having two paragraphs in a row
     body: $ => $._body_contents,
@@ -219,7 +222,7 @@ org_grammar = {
       $._nl,
       optional(field('contents', $.contents)),
       caseInsensitive('#+end_'),
-      $._immediate_expr,
+      field('end_name',alias($._immediate_expr, $.expr)),
       $._eol,
     ),
 
@@ -231,6 +234,7 @@ org_grammar = {
       $._nl,
       optional(field('contents', $.contents)),
       caseInsensitive('#+end:'),
+      optional(field('end_name', $.expr)),
       $._eol,
     ),
 
@@ -243,9 +247,19 @@ org_grammar = {
 
     listitem: $ => seq(
       field('bullet', $.bullet),
+      optional(field('checkbox', $.checkbox)),
       choice(
         $._eof,
         field('contents', $._body_contents),
+      ),
+    ),
+
+    checkbox: $ => choice(
+      '[ ]',
+      seq(
+        token(prec('non-immediate', '[')),
+        field('status', alias($._checkbox_status_expr, $.expr)),
+        token.immediate(prec('special', ']')),
       ),
     ),
 
@@ -321,6 +335,8 @@ org_grammar = {
     _immediate_expr: $ => repeat1(expr('immediate', token.immediate)),
     _noc_expr: $ => repeat1(expr('immediate', token.immediate, ':')),
 
+    _checkbox_status_expr: $ => expr('immediate', token.immediate, ']'),
+
     _ts_expr: $ => seq(
       expr('non-immediate', token, '>]'),
       repeat(expr('immediate', token.immediate, '>]'))
@@ -341,6 +357,9 @@ function expr(pr, tfunc, skip = '') {
     alias(tfunc(prec(pr, /\p{L}+/)), 'str'),
     alias(tfunc(prec(pr, /\p{N}+/)), 'num'),
     alias(tfunc(prec(pr, /[^\p{Z}\p{L}\p{N}\n\r]/)), 'sym'),
+     // for checkboxes: ugly, but makes them work..
+    // alias(tfunc(prec(pr, 'x')), 'str'),
+    // alias(tfunc(prec(pr, 'X')), 'str'),
   )
 }
 
